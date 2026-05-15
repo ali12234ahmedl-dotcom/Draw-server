@@ -1,0 +1,12 @@
+{
+  "name": "draw-server",
+  "version": "1.0.0",
+  "main": "draw_server.js",
+  "scripts": {
+    "start": "node draw_server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "ws": "^8.16.0"
+  }
+}
