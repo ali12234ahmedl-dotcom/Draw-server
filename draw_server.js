@@ -1,9 +1,4 @@
-/**
- * Drawing Canvas Server — standalone Node.js
- * Run: node draw_server.js
- * Requires: npm install express ws
- */
-
+// made by mohamed
 const express    = require("express");
 const http       = require("http");
 const { WebSocketServer } = require("ws");
@@ -19,7 +14,6 @@ const wss    = new WebSocketServer({ noServer: true });
 
 app.use(express.json());
 
-// ─── Session store (in-memory, cleaned up every minute) ──────────────────────
 const sessions = new Map();
 
 setInterval(() => {
@@ -30,9 +24,8 @@ setInterval(() => {
 }, 60_000);
 
 
-// ─── REST Routes ─────────────────────────────────────────────────────────────
+// made by mohamed
 
-// Bot calls this to create a new drawing session
 app.post("/api/draw/session", (req, res) => {
   const { word } = req.body;
   if (!word) return res.status(400).json({ error: "word is required" });
@@ -48,7 +41,7 @@ app.post("/api/draw/session", (req, res) => {
   });
 });
 
-// Bot calls this periodically to get the current canvas screenshot
+// made by mohamed
 app.get("/api/draw/:sessionId/snapshot", (req, res) => {
   const session = sessions.get(req.params.sessionId);
   if (!session) return res.status(404).json({ error: "Session not found" });
@@ -56,7 +49,6 @@ app.get("/api/draw/:sessionId/snapshot", (req, res) => {
   if (!session.snapshot) {
     res.setHeader("Content-Type", "image/png");
     res.setHeader("X-Has-Content", "false");
-    // 1×1 transparent PNG
     return res.send(Buffer.from(
       "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==",
       "base64"
@@ -68,7 +60,7 @@ app.get("/api/draw/:sessionId/snapshot", (req, res) => {
   res.send(session.snapshot);
 });
 
-// Bot calls this to clean up when the round ends
+
 app.delete("/api/draw/:sessionId", (req, res) => {
   const session = sessions.get(req.params.sessionId);
   if (!session) return res.status(404).json({ error: "Not found" });
@@ -77,7 +69,6 @@ app.delete("/api/draw/:sessionId", (req, res) => {
   res.json({ ok: true });
 });
 
-// Browser route — the drawer opens this link to see their canvas
 app.get("/api/draw/canvas/:sessionId", (req, res) => {
   const session = sessions.get(req.params.sessionId);
   if (!session) return res.status(404).send("<h1>Session not found or expired</h1>");
@@ -231,7 +222,6 @@ connect();
 });
 
 
-// ─── WebSocket upgrade ────────────────────────────────────────────────────────
 
 server.on("upgrade", (req, socket, head) => {
   const url   = new URL(req.url ?? "/", "http://localhost");
@@ -259,7 +249,7 @@ server.on("upgrade", (req, socket, head) => {
 });
 
 
-// ─── Start ────────────────────────────────────────────────────────────────────
+// made by mohamed
 
 server.listen(PORT, () => {
   console.log(`✅ Drawing canvas server running on port ${PORT}`);
