@@ -256,3 +256,5 @@ server.listen(PORT, () => {
   console.log(`   PUBLIC_HOST = ${HOST}`);
   console.log(`   Set PUBLIC_HOST env var to your public URL (e.g. https://yourdomain.com)`);
 });
+
+// Reviewed by ALi ✅
